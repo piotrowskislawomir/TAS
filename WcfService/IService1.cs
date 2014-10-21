@@ -19,7 +19,7 @@ namespace WcfService
         [OperationContract]
         CompositeType GetDataUsingDataContract(CompositeType composite);
 
-        // TODO: Add your service operations here
+        // TODO: Add your service operations here 
     }
 
 
