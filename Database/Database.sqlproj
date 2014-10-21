@@ -60,5 +60,6 @@
   </ItemGroup>
   <ItemGroup>
     <Build Include="Table.sql" />
+    <Build Include="skrypt_tworzacy_baze.sql" />
   </ItemGroup>
 </Project>
