@@ -1,9 +1,9 @@
 
-
 CREATE TABLE dbo.Categories(
 	id int identity(1,1) primary key,
 	name nvarchar(max)
 );
+
 
 INSERT INTO Categories(name) VALUES ('Biuro i firma') --1
 INSERT INTO Categories(name) VALUES ('Bi¿uteria i zegarki')
@@ -114,7 +114,7 @@ CREATE TABLE [Services](
 
 INSERT INTO [Services](category_id, company_id, name, service_information)
 VALUES (7,1,'Proclub Warsztaty fotografii otworkowej',
-'Profesjonalny Sklep Fotograficzny PROCLUB serdecznie zaprasza do udzia³u w dwudniowych warsztatach fotograficznych',
+'Profesjonalny Sklep Fotograficzny PROCLUB serdecznie zaprasza do udzia³u w dwudniowych warsztatach fotograficznych'
 )
 
 INSERT INTO [Services](category_id, company_id, name, service_information)

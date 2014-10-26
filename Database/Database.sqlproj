@@ -61,5 +61,17 @@
   <ItemGroup>
     <Build Include="Table.sql" />
     <Build Include="skrypt_tworzacy_baze.sql" />
+    <Build Include="Categories.sql" />
+    <Build Include="Producers.sql" />
+    <Build Include="Users.sql" />
+    <Build Include="Products.sql" />
+    <Build Include="Companies.sql" />
+    <Build Include="Services.sql" />
+    <Build Include="Opinions.sql" />
+    <Build Include="Rankings.sql" />
+    <Build Include="Subscription.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Inserts.sql" />
   </ItemGroup>
 </Project>
