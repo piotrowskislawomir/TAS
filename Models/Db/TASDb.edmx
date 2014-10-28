@@ -1,0 +1,726 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="TASModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Categories">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Companies">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar(max)" />
+          <Property Name="phone" Type="nvarchar" MaxLength="100" />
+          <Property Name="city" Type="nvarchar" MaxLength="100" />
+          <Property Name="street_and_number" Type="nvarchar" MaxLength="100" />
+          <Property Name="mail" Type="nvarchar" MaxLength="100" />
+          <Property Name="site_in_Internet" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Opinions">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="rate" Type="int" />
+          <Property Name="opinion_description" Type="nvarchar(max)" />
+          <Property Name="opinion_date" Type="date" />
+          <Property Name="product_id" Type="int" />
+          <Property Name="product_price" Type="float" />
+          <Property Name="service_id" Type="int" />
+          <Property Name="user_id" Type="int" />
+        </EntityType>
+        <EntityType Name="Producers">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Products">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar(max)" />
+          <Property Name="category_id" Type="int" />
+          <Property Name="producer_id" Type="int" />
+          <Property Name="shop_location" Type="nvarchar(max)" />
+          <Property Name="average_price" Type="float" />
+          <Property Name="product_information" Type="nvarchar(max)" />
+          <Property Name="picture" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Rankings">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="product_id" Type="int" />
+          <Property Name="service_id" Type="int" />
+          <Property Name="number_of_ratings" Type="int" />
+          <Property Name="average_rate" Type="float" />
+        </EntityType>
+        <EntityType Name="Services">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="average_price" Type="float" />
+          <Property Name="name" Type="nvarchar(max)" />
+          <Property Name="service_information" Type="nvarchar(max)" />
+          <Property Name="category_id" Type="int" />
+          <Property Name="company_id" Type="int" />
+        </EntityType>
+        <EntityType Name="Subscription">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="mail" Type="nvarchar" MaxLength="100" />
+          <Property Name="user_id" Type="int" />
+          <Property Name="category_id" Type="int" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nick" Type="nvarchar" MaxLength="100" />
+          <Property Name="password" Type="nvarchar" MaxLength="100" />
+          <Property Name="mail" Type="nvarchar" MaxLength="100" />
+          <Property Name="name" Type="nvarchar" MaxLength="100" />
+          <Property Name="rank" Type="float" />
+        </EntityType>
+        <Association Name="Op_id_product_key">
+          <End Role="Services" Type="Self.Services" Multiplicity="0..1" />
+          <End Role="Opinions" Type="Self.Opinions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Services">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Opinions">
+              <PropertyRef Name="product_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Op_id_service_key">
+          <End Role="Products" Type="Self.Products" Multiplicity="0..1" />
+          <End Role="Opinions" Type="Self.Opinions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Opinions">
+              <PropertyRef Name="service_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Op_id_user_key">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Opinions" Type="Self.Opinions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Opinions">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Product_id_category_key">
+          <End Role="Categories" Type="Self.Categories" Multiplicity="0..1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="category_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Product_id_producer_key">
+          <End Role="Producers" Type="Self.Producers" Multiplicity="0..1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Producers">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="producer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Rank_id_product_key">
+          <End Role="Services" Type="Self.Services" Multiplicity="0..1" />
+          <End Role="Rankings" Type="Self.Rankings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Services">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Rankings">
+              <PropertyRef Name="product_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Rank_id_service_key">
+          <End Role="Products" Type="Self.Products" Multiplicity="0..1" />
+          <End Role="Rankings" Type="Self.Rankings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Rankings">
+              <PropertyRef Name="service_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Serv_id_category_key">
+          <End Role="Categories" Type="Self.Categories" Multiplicity="0..1" />
+          <End Role="Services" Type="Self.Services" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Services">
+              <PropertyRef Name="category_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Serv_id_company_key">
+          <End Role="Companies" Type="Self.Companies" Multiplicity="0..1" />
+          <End Role="Services" Type="Self.Services" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Services">
+              <PropertyRef Name="company_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Subs_id_category_key">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Subscription" Type="Self.Subscription" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Subscription">
+              <PropertyRef Name="category_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Subs_id_user_key">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Subscription" Type="Self.Subscription" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Subscription">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TASModelStoreContainer">
+          <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Companies" EntityType="Self.Companies" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Opinions" EntityType="Self.Opinions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Producers" EntityType="Self.Producers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Rankings" EntityType="Self.Rankings" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Services" EntityType="Self.Services" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Subscription" EntityType="Self.Subscription" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="Op_id_product_key" Association="Self.Op_id_product_key">
+            <End Role="Services" EntitySet="Services" />
+            <End Role="Opinions" EntitySet="Opinions" />
+          </AssociationSet>
+          <AssociationSet Name="Op_id_service_key" Association="Self.Op_id_service_key">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="Opinions" EntitySet="Opinions" />
+          </AssociationSet>
+          <AssociationSet Name="Op_id_user_key" Association="Self.Op_id_user_key">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Opinions" EntitySet="Opinions" />
+          </AssociationSet>
+          <AssociationSet Name="Product_id_category_key" Association="Self.Product_id_category_key">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="Product_id_producer_key" Association="Self.Product_id_producer_key">
+            <End Role="Producers" EntitySet="Producers" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="Rank_id_product_key" Association="Self.Rank_id_product_key">
+            <End Role="Services" EntitySet="Services" />
+            <End Role="Rankings" EntitySet="Rankings" />
+          </AssociationSet>
+          <AssociationSet Name="Rank_id_service_key" Association="Self.Rank_id_service_key">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="Rankings" EntitySet="Rankings" />
+          </AssociationSet>
+          <AssociationSet Name="Serv_id_category_key" Association="Self.Serv_id_category_key">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="Services" EntitySet="Services" />
+          </AssociationSet>
+          <AssociationSet Name="Serv_id_company_key" Association="Self.Serv_id_company_key">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="Services" EntitySet="Services" />
+          </AssociationSet>
+          <AssociationSet Name="Subs_id_category_key" Association="Self.Subs_id_category_key">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Subscription" EntitySet="Subscription" />
+          </AssociationSet>
+          <AssociationSet Name="Subs_id_user_key" Association="Self.Subs_id_user_key">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Subscription" EntitySet="Subscription" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TASModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Products" Relationship="Self.Product_id_category_key" FromRole="Categories" ToRole="Products" />
+          <NavigationProperty Name="Services" Relationship="Self.Serv_id_category_key" FromRole="Categories" ToRole="Services" />
+        </EntityType>
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="phone" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="city" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="street_and_number" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="mail" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="site_in_Internet" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Services" Relationship="Self.Serv_id_company_key" FromRole="Companies" ToRole="Services" />
+        </EntityType>
+        <EntityType Name="Opinion">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="rate" Type="Int32" />
+          <Property Name="opinion_description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="opinion_date" Type="DateTime" Precision="0" />
+          <Property Name="product_id" Type="Int32" />
+          <Property Name="product_price" Type="Double" />
+          <Property Name="service_id" Type="Int32" />
+          <Property Name="user_id" Type="Int32" />
+          <NavigationProperty Name="Service" Relationship="Self.Op_id_product_key" FromRole="Opinions" ToRole="Services" />
+          <NavigationProperty Name="Product" Relationship="Self.Op_id_service_key" FromRole="Opinions" ToRole="Products" />
+          <NavigationProperty Name="User" Relationship="Self.Op_id_user_key" FromRole="Opinions" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Producer">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Products" Relationship="Self.Product_id_producer_key" FromRole="Producers" ToRole="Products" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="category_id" Type="Int32" />
+          <Property Name="producer_id" Type="Int32" />
+          <Property Name="shop_location" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="average_price" Type="Double" />
+          <Property Name="product_information" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="picture" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Category" Relationship="Self.Product_id_category_key" FromRole="Products" ToRole="Categories" />
+          <NavigationProperty Name="Opinions" Relationship="Self.Op_id_service_key" FromRole="Products" ToRole="Opinions" />
+          <NavigationProperty Name="Producer" Relationship="Self.Product_id_producer_key" FromRole="Products" ToRole="Producers" />
+          <NavigationProperty Name="Rankings" Relationship="Self.Rank_id_service_key" FromRole="Products" ToRole="Rankings" />
+        </EntityType>
+        <EntityType Name="Ranking">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="product_id" Type="Int32" />
+          <Property Name="service_id" Type="Int32" />
+          <Property Name="number_of_ratings" Type="Int32" />
+          <Property Name="average_rate" Type="Double" />
+          <NavigationProperty Name="Product" Relationship="Self.Rank_id_service_key" FromRole="Rankings" ToRole="Products" />
+          <NavigationProperty Name="Service" Relationship="Self.Rank_id_product_key" FromRole="Rankings" ToRole="Services" />
+        </EntityType>
+        <EntityType Name="Service">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="average_price" Type="Double" />
+          <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="service_information" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="category_id" Type="Int32" />
+          <Property Name="company_id" Type="Int32" />
+          <NavigationProperty Name="Category" Relationship="Self.Serv_id_category_key" FromRole="Services" ToRole="Categories" />
+          <NavigationProperty Name="Company" Relationship="Self.Serv_id_company_key" FromRole="Services" ToRole="Companies" />
+          <NavigationProperty Name="Opinions" Relationship="Self.Op_id_product_key" FromRole="Services" ToRole="Opinions" />
+          <NavigationProperty Name="Rankings" Relationship="Self.Rank_id_product_key" FromRole="Services" ToRole="Rankings" />
+        </EntityType>
+        <EntityType Name="Subscription">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="mail" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="user_id" Type="Int32" />
+          <Property Name="category_id" Type="Int32" />
+          <NavigationProperty Name="User" Relationship="Self.Subs_id_category_key" FromRole="Subscription" ToRole="Users" />
+          <NavigationProperty Name="User1" Relationship="Self.Subs_id_user_key" FromRole="Subscription" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nick" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="password" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="mail" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="rank" Type="Double" />
+          <NavigationProperty Name="Opinions" Relationship="Self.Op_id_user_key" FromRole="Users" ToRole="Opinions" />
+          <NavigationProperty Name="Subscriptions" Relationship="Self.Subs_id_category_key" FromRole="Users" ToRole="Subscription" />
+          <NavigationProperty Name="Subscriptions1" Relationship="Self.Subs_id_user_key" FromRole="Users" ToRole="Subscription" />
+        </EntityType>
+        <Association Name="Product_id_category_key">
+          <End Role="Categories" Type="Self.Category" Multiplicity="0..1" />
+          <End Role="Products" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="category_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Serv_id_category_key">
+          <End Role="Categories" Type="Self.Category" Multiplicity="0..1" />
+          <End Role="Services" Type="Self.Service" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Services">
+              <PropertyRef Name="category_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Serv_id_company_key">
+          <End Role="Companies" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="Services" Type="Self.Service" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Services">
+              <PropertyRef Name="company_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Op_id_product_key">
+          <End Role="Services" Type="Self.Service" Multiplicity="0..1" />
+          <End Role="Opinions" Type="Self.Opinion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Services">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Opinions">
+              <PropertyRef Name="product_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Op_id_service_key">
+          <End Role="Products" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="Opinions" Type="Self.Opinion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Opinions">
+              <PropertyRef Name="service_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Op_id_user_key">
+          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Opinions" Type="Self.Opinion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Opinions">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Product_id_producer_key">
+          <End Role="Producers" Type="Self.Producer" Multiplicity="0..1" />
+          <End Role="Products" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Producers">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="producer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Rank_id_service_key">
+          <End Role="Products" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="Rankings" Type="Self.Ranking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Rankings">
+              <PropertyRef Name="service_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Rank_id_product_key">
+          <End Role="Services" Type="Self.Service" Multiplicity="0..1" />
+          <End Role="Rankings" Type="Self.Ranking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Services">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Rankings">
+              <PropertyRef Name="product_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Subs_id_category_key">
+          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Subscription" Type="Self.Subscription" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Subscription">
+              <PropertyRef Name="category_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Subs_id_user_key">
+          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Subscription" Type="Self.Subscription" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Subscription">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TASEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Categories" EntityType="Self.Category" />
+          <EntitySet Name="Companies" EntityType="Self.Company" />
+          <EntitySet Name="Opinions" EntityType="Self.Opinion" />
+          <EntitySet Name="Producers" EntityType="Self.Producer" />
+          <EntitySet Name="Products" EntityType="Self.Product" />
+          <EntitySet Name="Rankings" EntityType="Self.Ranking" />
+          <EntitySet Name="Services" EntityType="Self.Service" />
+          <EntitySet Name="Subscriptions" EntityType="Self.Subscription" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="Product_id_category_key" Association="Self.Product_id_category_key">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="Serv_id_category_key" Association="Self.Serv_id_category_key">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="Services" EntitySet="Services" />
+          </AssociationSet>
+          <AssociationSet Name="Serv_id_company_key" Association="Self.Serv_id_company_key">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="Services" EntitySet="Services" />
+          </AssociationSet>
+          <AssociationSet Name="Op_id_product_key" Association="Self.Op_id_product_key">
+            <End Role="Services" EntitySet="Services" />
+            <End Role="Opinions" EntitySet="Opinions" />
+          </AssociationSet>
+          <AssociationSet Name="Op_id_service_key" Association="Self.Op_id_service_key">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="Opinions" EntitySet="Opinions" />
+          </AssociationSet>
+          <AssociationSet Name="Op_id_user_key" Association="Self.Op_id_user_key">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Opinions" EntitySet="Opinions" />
+          </AssociationSet>
+          <AssociationSet Name="Product_id_producer_key" Association="Self.Product_id_producer_key">
+            <End Role="Producers" EntitySet="Producers" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="Rank_id_service_key" Association="Self.Rank_id_service_key">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="Rankings" EntitySet="Rankings" />
+          </AssociationSet>
+          <AssociationSet Name="Rank_id_product_key" Association="Self.Rank_id_product_key">
+            <End Role="Services" EntitySet="Services" />
+            <End Role="Rankings" EntitySet="Rankings" />
+          </AssociationSet>
+          <AssociationSet Name="Subs_id_category_key" Association="Self.Subs_id_category_key">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Subscription" EntitySet="Subscriptions" />
+          </AssociationSet>
+          <AssociationSet Name="Subs_id_user_key" Association="Self.Subs_id_user_key">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Subscription" EntitySet="Subscriptions" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TASModelStoreContainer" CdmEntityContainer="TASEntities">
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="TASModel.Category">
+              <MappingFragment StoreEntitySet="Categories">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Companies">
+            <EntityTypeMapping TypeName="TASModel.Company">
+              <MappingFragment StoreEntitySet="Companies">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="street_and_number" ColumnName="street_and_number" />
+                <ScalarProperty Name="mail" ColumnName="mail" />
+                <ScalarProperty Name="site_in_Internet" ColumnName="site_in_Internet" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Opinions">
+            <EntityTypeMapping TypeName="TASModel.Opinion">
+              <MappingFragment StoreEntitySet="Opinions">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="rate" ColumnName="rate" />
+                <ScalarProperty Name="opinion_description" ColumnName="opinion_description" />
+                <ScalarProperty Name="opinion_date" ColumnName="opinion_date" />
+                <ScalarProperty Name="product_id" ColumnName="product_id" />
+                <ScalarProperty Name="product_price" ColumnName="product_price" />
+                <ScalarProperty Name="service_id" ColumnName="service_id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Producers">
+            <EntityTypeMapping TypeName="TASModel.Producer">
+              <MappingFragment StoreEntitySet="Producers">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="TASModel.Product">
+              <MappingFragment StoreEntitySet="Products">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="category_id" ColumnName="category_id" />
+                <ScalarProperty Name="producer_id" ColumnName="producer_id" />
+                <ScalarProperty Name="shop_location" ColumnName="shop_location" />
+                <ScalarProperty Name="average_price" ColumnName="average_price" />
+                <ScalarProperty Name="product_information" ColumnName="product_information" />
+                <ScalarProperty Name="picture" ColumnName="picture" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Rankings">
+            <EntityTypeMapping TypeName="TASModel.Ranking">
+              <MappingFragment StoreEntitySet="Rankings">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="product_id" ColumnName="product_id" />
+                <ScalarProperty Name="service_id" ColumnName="service_id" />
+                <ScalarProperty Name="number_of_ratings" ColumnName="number_of_ratings" />
+                <ScalarProperty Name="average_rate" ColumnName="average_rate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Services">
+            <EntityTypeMapping TypeName="TASModel.Service">
+              <MappingFragment StoreEntitySet="Services">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="average_price" ColumnName="average_price" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="service_information" ColumnName="service_information" />
+                <ScalarProperty Name="category_id" ColumnName="category_id" />
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Subscriptions">
+            <EntityTypeMapping TypeName="TASModel.Subscription">
+              <MappingFragment StoreEntitySet="Subscription">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="mail" ColumnName="mail" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="category_id" ColumnName="category_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="TASModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nick" ColumnName="nick" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="mail" ColumnName="mail" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="rank" ColumnName="rank" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
